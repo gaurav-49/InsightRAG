@@ -120,6 +120,7 @@ With a semantic embedding model, run the sweep again. The full grid is in
 
 ## Documentation
 
+* [docs/user-guide.md](docs/user-guide.md): what it's for and how to use it, with examples
 * [docs/design-notes.md](docs/design-notes.md): how each design-doc decision is implemented, and the deliberate deviations
 * [docs/traceability.md](docs/traceability.md): every FR/NFR mapped to code and tests
 * [docs/runbook.md](docs/runbook.md): operating, scaling, failure handling, dead letters, model changes
