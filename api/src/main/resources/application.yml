@@ -1,0 +1,118 @@
+server:
+  port: 8080
+  shutdown: graceful
+  tomcat:
+    threads:
+      max: 200
+
+spring:
+  application:
+    name: insightrag-api
+  threads:
+    virtual:
+      enabled: false
+  datasource:
+    url: ${DATABASE_JDBC_URL:jdbc:postgresql://localhost:5432/insightrag}
+    username: ${DATABASE_USER:insightrag}
+    password: ${DATABASE_PASSWORD:insightrag}
+    hikari:
+      maximum-pool-size: 20
+      connection-timeout: 2000
+      validation-timeout: 1000
+  flyway:
+    # NFR-09: schema only ever comes from the versioned scripts in db/migration.
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      url: ${REDIS_URL:redis://localhost:6379/0}
+      timeout: 500ms
+      connect-timeout: 500ms
+  servlet:
+    multipart:
+      max-file-size: 26MB
+      max-request-size: 27MB
+      file-size-threshold: 1MB
+  mvc:
+    async:
+      request-timeout: 130s
+  jackson:
+    default-property-inclusion: always
+    serialization:
+      write-dates-as-timestamps: false
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+logging:
+  structured:
+    # NFR-07 structured logs. Request bodies and document content are never logged (NFR-06).
+    format:
+      console: ${LOG_FORMAT:logstash}
+  level:
+    root: INFO
+    com.insightrag: INFO
+
+management:
+  endpoints:
+    web:
+      base-path: /api/v1
+      path-mapping:
+        prometheus: metrics
+      exposure:
+        include: prometheus
+  endpoint:
+    health:
+      enabled: false
+  metrics:
+    tags:
+      application: insightrag-api
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+insightrag:
+  retrieval:
+    top-k: ${RETRIEVAL_TOP_K:5}
+    floor: ${RETRIEVAL_FLOOR:0.65}
+    relative-floor: ${RETRIEVAL_RELATIVE_FLOOR:0}
+  cache:
+    enabled: ${CACHE_ENABLED:true}
+    semantic-threshold: ${CACHE_SEMANTIC_THRESHOLD:0.97}
+    l1-ttl: ${CACHE_L1_TTL:24h}
+    l2-ttl: ${CACHE_L2_TTL:24h}
+  ratelimit:
+    enabled: ${RATELIMIT_ENABLED:true}
+    query-per-minute: ${RATELIMIT_TOKENS_PER_MINUTE:60}
+    query-burst: ${RATELIMIT_BURST:20}
+    ingest-per-minute: ${RATELIMIT_INGEST_PER_MINUTE:20}
+    ingest-burst: ${RATELIMIT_INGEST_BURST:10}
+    llm-per-minute: ${RATELIMIT_LLM_PER_MINUTE:600}
+    llm-burst: ${RATELIMIT_LLM_BURST:60}
+  llm:
+    provider: ${LLM_PROVIDER:extractive}
+    model: ${LLM_MODEL:claude-opus-5}
+    base-url: ${LLM_BASE_URL:}
+    api-key: ${ANTHROPIC_API_KEY:}
+    effort: ${LLM_EFFORT:low}
+    timeout: ${LLM_TIMEOUT:30s}
+    context-budget-tokens: ${LLM_CONTEXT_BUDGET_TOKENS:3000}
+    retry:
+      max-attempts: ${LLM_RETRY_MAX_ATTEMPTS:3}
+  embedding:
+    provider: ${EMBEDDING_PROVIDER:hash}
+    model: ${EMBEDDING_MODEL:}
+    base-url: ${EMBEDDING_BASE_URL:}
+    api-key: ${EMBEDDING_API_KEY:}
+  upload:
+    max-size: ${UPLOAD_MAX_SIZE:25MB}
+    blob-root: ${BLOB_ROOT:/data/uploads}
+  auth:
+    jwt-secret: ${JWT_SECRET:change-me-change-me-change-me-change-me}
+    issuer: ${JWT_ISSUER:insightrag}
+    dev-token-enabled: ${DEV_TOKEN_ENABLED:false}
+  eval:
+    recall-gate: ${EVAL_RECALL_GATE:0.85}
+    refusal-gate: ${EVAL_REFUSAL_GATE:0.80}
+    chunk-size-tokens: ${CHUNK_SIZE_TOKENS:512}
+    chunk-overlap-tokens: ${CHUNK_OVERLAP_TOKENS:64}

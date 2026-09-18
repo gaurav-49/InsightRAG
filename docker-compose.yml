@@ -1,0 +1,112 @@
+# InsightRAG local stack (design doc §9.1, NFR-08): no cloud account and no token spend needed.
+#
+#   docker compose up -d --build                       # api + worker + postgres + redis
+#   docker compose up -d --scale worker=3              # horizontal workers (consumer group)
+#   docker compose --profile ollama up -d              # optional local model
+#
+# Configuration comes from .env (see .env.example).
+
+x-common-env: &common-env
+  EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-hash}
+  EMBEDDING_MODEL: ${EMBEDDING_MODEL:-}
+  EMBEDDING_BASE_URL: ${EMBEDDING_BASE_URL:-}
+  EMBEDDING_API_KEY: ${EMBEDDING_API_KEY:-}
+  CHUNK_SIZE_TOKENS: ${CHUNK_SIZE_TOKENS:-128}
+  CHUNK_OVERLAP_TOKENS: ${CHUNK_OVERLAP_TOKENS:-0}
+  BLOB_ROOT: /data/uploads
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: insightrag
+      POSTGRES_USER: insightrag
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-insightrag}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U insightrag -d insightrag"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    # AOF persistence keeps the ingestion stream across restarts. volatile-lru: only keys with a
+    # TTL (the caches and rate-limit buckets) are eviction candidates, so memory pressure can
+    # never evict the ingestion stream.
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "${REDIS_MAXMEMORY:-256mb}", "--maxmemory-policy", "volatile-lru"]
+    volumes:
+      - redisdata:/data
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    environment:
+      <<: *common-env
+      DATABASE_JDBC_URL: jdbc:postgresql://postgres:5432/insightrag
+      DATABASE_USER: insightrag
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-insightrag}
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-change-me-dev-only-secret}
+      DEV_TOKEN_ENABLED: ${DEV_TOKEN_ENABLED:-true}
+      LLM_PROVIDER: ${LLM_PROVIDER:-extractive}
+      LLM_MODEL: ${LLM_MODEL:-claude-opus-5}
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      RETRIEVAL_TOP_K: ${RETRIEVAL_TOP_K:-5}
+      RETRIEVAL_FLOOR: ${RETRIEVAL_FLOOR:-0.15}
+      RETRIEVAL_RELATIVE_FLOOR: ${RETRIEVAL_RELATIVE_FLOOR:-0.7}
+      CACHE_SEMANTIC_THRESHOLD: ${CACHE_SEMANTIC_THRESHOLD:-0.97}
+      RATELIMIT_TOKENS_PER_MINUTE: ${RATELIMIT_TOKENS_PER_MINUTE:-60}
+      RATELIMIT_BURST: ${RATELIMIT_BURST:-20}
+      LLM_RETRY_MAX_ATTEMPTS: ${LLM_RETRY_MAX_ATTEMPTS:-3}
+    volumes:
+      - uploads:/data/uploads
+    ports:
+      - "${API_PORT:-8080}:8080"
+
+  worker:
+    build:
+      context: worker
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      api: { condition: service_healthy }   # the API applies the migrations
+    environment:
+      <<: *common-env
+      DATABASE_URL: postgresql://insightrag:${POSTGRES_PASSWORD:-insightrag}@postgres:5432/insightrag
+      REDIS_URL: redis://redis:6379/0
+      WORKER_BATCH_SIZE: ${WORKER_BATCH_SIZE:-32}
+      WORKER_MAX_ATTEMPTS: ${WORKER_MAX_ATTEMPTS:-5}
+      WORKER_VISIBILITY_TIMEOUT_MS: ${WORKER_VISIBILITY_TIMEOUT_MS:-600000}
+    volumes:
+      - uploads:/data/uploads
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["ollama"]
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+
+volumes:
+  pgdata:
+  redisdata:
+  uploads:
+  ollama:

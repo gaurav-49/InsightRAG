@@ -1,0 +1,17 @@
+# build output
+api/target/
+**/__pycache__/
+**/.pytest_cache/
+*.egg-info/
+worker/build/
+
+# local environments
+worker/.venv/
+.env
+
+# per-run evaluation output (the committed sweep report is the reference baseline)
+eval/reports/latest.json
+
+.DS_Store
+.idea/
+.vscode/

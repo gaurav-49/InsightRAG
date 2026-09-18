@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "insightrag-worker"
+version = "1.0.0"
+description = "InsightRAG embedding worker: extraction, chunking, embedding, vector persistence"
+requires-python = ">=3.9"
+dependencies = [
+    "redis>=5.0",
+    "psycopg[binary]>=3.1",
+    "pypdf>=4.0",
+    "python-docx>=1.1",
+    "httpx>=0.27",
+    "prometheus-client>=0.20",
+    "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+tiktoken = ["tiktoken>=0.7"]
+dev = [
+    "pytest>=8",
+    "testcontainers[postgres,redis]>=4.8",
+    "reportlab>=4",
+]
+
+[project.scripts]
+insightrag-worker = "insightrag_worker.main:main"
+insightrag-sweep = "insightrag_worker.evaluation.sweep:main"
+
+[tool.setuptools.packages.find]
+include = ["insightrag_worker*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "integration: needs Docker (Testcontainers Postgres + Redis)",
+    "quality: runs the offline retrieval evaluation against eval/",
+]

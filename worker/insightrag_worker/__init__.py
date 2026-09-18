@@ -1,0 +1,1 @@
+"""InsightRAG embedding worker."""

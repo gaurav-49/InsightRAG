@@ -1,0 +1,195 @@
+{
+  "model": "hash-v1",
+  "dimensions": 1536,
+  "cases": [
+    {
+      "input": "What is the notice period for employees?",
+      "normalized": "What is the notice period for employees?",
+      "terms": [
+        "notice",
+        "period",
+        "employee"
+      ],
+      "vector": {
+        "33": -0.534522483825,
+        "717": -0.267261241912,
+        "1195": 0.267261241912,
+        "1284": 0.534522483825,
+        "1457": 0.534522483825
+      }
+    },
+    {
+      "input": "How much notice must I give before resigning?",
+      "normalized": "How much notice must I give before resigning?",
+      "terms": [
+        "much",
+        "notice",
+        "must",
+        "give",
+        "resign"
+      ],
+      "vector": {
+        "140": -0.204124145232,
+        "215": 0.204124145232,
+        "284": 0.408248290464,
+        "296": 0.408248290464,
+        "573": -0.204124145232,
+        "821": -0.204124145232,
+        "1313": -0.408248290464,
+        "1404": 0.408248290464,
+        "1457": 0.408248290464
+      }
+    },
+    {
+      "input": "The   notice period is 60 days\tfor employees on permanent contracts.",
+      "normalized": "The notice period is 60 days for employees on permanent contracts.",
+      "terms": [
+        "notice",
+        "period",
+        "60",
+        "day",
+        "employee",
+        "permanent",
+        "contract"
+      ],
+      "vector": {
+        "33": -0.342997170285,
+        "472": -0.171498585143,
+        "509": 0.342997170285,
+        "514": 0.171498585143,
+        "515": -0.342997170285,
+        "571": 0.342997170285,
+        "678": 0.171498585143,
+        "1023": 0.171498585143,
+        "1195": 0.171498585143,
+        "1284": 0.342997170285,
+        "1324": 0.171498585143,
+        "1349": 0.342997170285,
+        "1457": 0.342997170285
+      }
+    },
+    {
+      "input": "Policies, policies and more POLICIES: processing, processed, classes, running.",
+      "normalized": "Policies, policies and more POLICIES: processing, processed, classes, running.",
+      "terms": [
+        "policy",
+        "policy",
+        "policy",
+        "process",
+        "process",
+        "classe",
+        "runn"
+      ],
+      "vector": {
+        "12": -0.15084066233,
+        "127": 0.633112135194,
+        "189": 0.15084066233,
+        "332": -0.15084066233,
+        "366": 0.30168132466,
+        "378": 0.510790884276,
+        "798": 0.15084066233,
+        "1068": -0.30168132466,
+        "1354": 0.255395442138
+      }
+    },
+    {
+      "input": "the and of to a in is",
+      "normalized": "the and of to a in is",
+      "terms": [],
+      "vector": {
+        "0": 1.0
+      }
+    },
+    {
+      "input": "",
+      "normalized": "",
+      "terms": [],
+      "vector": {
+        "0": 1.0
+      }
+    },
+    {
+      "input": "Café résumé naïve — ﬁle ligatures ２０２６ fullwidth digits",
+      "normalized": "Café résumé naïve — file ligatures 2026 fullwidth digits",
+      "terms": [
+        "caf",
+        "r",
+        "sum",
+        "na",
+        "ve",
+        "file",
+        "ligature",
+        "2026",
+        "fullwidth",
+        "digit"
+      ],
+      "vector": {
+        "47": 0.142857142857,
+        "86": -0.285714285714,
+        "135": 0.142857142857,
+        "156": 0.142857142857,
+        "168": 0.285714285714,
+        "196": 0.285714285714,
+        "220": 0.142857142857,
+        "403": 0.285714285714,
+        "509": -0.285714285714,
+        "512": 0.142857142857,
+        "518": -0.142857142857,
+        "648": 0.285714285714,
+        "652": 0.285714285714,
+        "789": 0.285714285714,
+        "821": 0.142857142857,
+        "1041": -0.142857142857,
+        "1315": 0.142857142857,
+        "1347": 0.285714285714,
+        "1520": -0.285714285714
+      }
+    },
+    {
+      "input": "Section 4.2: Travel & Expense — reimbursements over $500 require VP approval within 30 days.",
+      "normalized": "Section 4.2: Travel & Expense — reimbursements over $500 require VP approval within 30 days.",
+      "terms": [
+        "section",
+        "4",
+        "2",
+        "travel",
+        "expense",
+        "reimbursement",
+        "500",
+        "require",
+        "vp",
+        "approval",
+        "within",
+        "30",
+        "day"
+      ],
+      "vector": {
+        "26": -0.125,
+        "71": 0.125,
+        "176": -0.25,
+        "231": -0.25,
+        "315": 0.25,
+        "332": 0.125,
+        "359": 0.125,
+        "469": 0.25,
+        "509": 0.25,
+        "562": -0.125,
+        "639": -0.125,
+        "716": -0.25,
+        "732": -0.125,
+        "772": -0.25,
+        "810": 0.25,
+        "855": 0.125,
+        "871": -0.125,
+        "886": -0.25,
+        "895": -0.25,
+        "912": 0.125,
+        "1062": 0.25,
+        "1123": 0.25,
+        "1202": 0.125,
+        "1273": 0.25,
+        "1452": -0.125
+      }
+    }
+  ]
+}

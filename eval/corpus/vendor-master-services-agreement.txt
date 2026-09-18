@@ -1,0 +1,57 @@
+MASTER SERVICES AGREEMENT
+
+Between Halcyon Robotics Ltd ("Customer") and Stratus Compute Services Inc ("Provider"). Agreement reference MSA-2025-0417. Signed 17 April 2025.
+
+1. SERVICES
+
+Provider supplies managed cloud hosting, database operations and 24x7 infrastructure monitoring for the Customer's Halcyon Cloud platform, as described in Statement of Work SOW-01. Additional services are added only by a new statement of work signed by both parties.
+
+2. TERM AND RENEWAL
+
+The initial term is 36 months from the effective date of 1 May 2025. After the initial term the Agreement renews automatically for successive 12-month renewal terms unless either party gives written notice of non-renewal at least 90 days before the end of the current term.
+
+3. TERMINATION
+
+Either party may terminate this Agreement for material breach if the breach is not cured within 30 days of written notice describing it. The Customer may terminate for convenience at any time on 180 days written notice, subject to the early termination fee in section 7.3. Either party may terminate immediately if the other becomes insolvent.
+
+On termination the Provider shall, for a transition period of up to 90 days, continue to provide the services and give reasonable assistance to migrate the Customer's data to a new provider. Customer data shall be returned in a standard, machine-readable format and then deleted from the Provider's systems within 30 days after the transition period ends, with written certification of deletion.
+
+4. SERVICE LEVELS
+
+The Provider guarantees monthly availability of 99.95 percent for the production hosting service, measured per calendar month and excluding scheduled maintenance announced at least 5 business days in advance. Scheduled maintenance may not exceed 4 hours per month.
+
+If monthly availability falls below the guarantee, the Customer receives service credits as a percentage of that month's fees:
+- below 99.95 percent but at or above 99.9 percent: 5 percent credit;
+- below 99.9 percent but at or above 99.5 percent: 10 percent credit;
+- below 99.5 percent: 25 percent credit.
+
+Service credits must be claimed within 60 days of the end of the affected month. Service credits are the Customer's sole financial remedy for availability failures, except where availability is below 99.0 percent for three consecutive months, in which case the Customer may terminate for material breach without paying any early termination fee.
+
+Priority 1 support tickets are answered within 15 minutes, 24 hours a day. Priority 2 tickets are answered within 2 hours during business hours.
+
+5. SECURITY AND DATA PROTECTION
+
+The Provider shall maintain ISO 27001 certification and provide its SOC 2 Type II report annually. The Provider shall notify the Customer of any personal data breach affecting Customer data without undue delay and in any event within 24 hours of becoming aware of it. Customer data shall be stored only in data centres located in the European Union.
+
+The Provider may engage subprocessors only with 30 days prior written notice to the Customer; the Customer may object on reasonable data protection grounds.
+
+6. FEES AND PAYMENT
+
+Fees are set out in SOW-01. The Provider invoices monthly in arrears. Invoices are payable within 45 days of receipt. Undisputed amounts not paid on time bear interest at 1 percent per month. The Customer may withhold disputed amounts in good faith while the dispute is resolved.
+
+Fees are fixed for the first 12 months. After that the Provider may increase fees once per year by no more than 4 percent, with 60 days written notice.
+
+7. LIABILITY
+
+7.1 Neither party excludes liability for death or personal injury caused by negligence, or for fraud.
+7.2 Subject to 7.1, each party's total aggregate liability under this Agreement in any 12-month period is capped at 150 percent of the fees paid or payable in that period. For breaches of the data protection obligations in section 5, the cap is raised to 300 percent of those fees.
+7.3 If the Customer terminates for convenience before the end of the initial term, it shall pay an early termination fee equal to 25 percent of the fees that would have been payable for the remainder of the initial term.
+7.4 Neither party is liable for indirect or consequential loss, including loss of profit.
+
+8. GOVERNING LAW
+
+This Agreement is governed by the laws of England and Wales. Disputes are first escalated to the parties' executive sponsors, who shall meet within 15 business days; unresolved disputes are then referred to the courts of London.
+
+9. NOTICES
+
+Formal notices must be sent by email and by courier to the addresses in Schedule 1. Notices to the Customer are addressed to the General Counsel of Halcyon Robotics Ltd.

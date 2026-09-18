@@ -1,0 +1,7 @@
+**/.venv
+**/target
+**/__pycache__
+**/.pytest_cache
+**/node_modules
+.git
+eval/reports
