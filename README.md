@@ -74,6 +74,18 @@ Changing the embedding provider means re-embedding the corpus. The system refuse
 models (see the [runbook](docs/runbook.md#change-the-embedding-model)). After a change, re-run
 `make sweep` and tune the retrieval floor for the new model.
 
+## Deploy to a free server (one command)
+
+On a fresh Ubuntu server, such as Oracle Cloud Always Free, run:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/gaurav-49/InsightRAG/main/deploy/install.sh | sudo bash
+```
+
+It installs Docker, sets up HTTPS, generates secrets, starts everything, and prints the site
+address and an admin token. See [docs/deployment.md](docs/deployment.md) for server setup and
+options.
+
 ## API
 
 | Method & path | Scope | Purpose |
@@ -121,6 +133,7 @@ With a semantic embedding model, run the sweep again. The full grid is in
 ## Documentation
 
 * [docs/user-guide.md](docs/user-guide.md): what it's for and how to use it, with examples
+* [docs/deployment.md](docs/deployment.md): deploying on a free server (Oracle Cloud Always Free) with HTTPS
 * [docs/design-notes.md](docs/design-notes.md): how each design-doc decision is implemented, and the deliberate deviations
 * [docs/traceability.md](docs/traceability.md): every FR/NFR mapped to code and tests
 * [docs/runbook.md](docs/runbook.md): operating, scaling, failure handling, dead letters, model changes

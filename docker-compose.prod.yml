@@ -1,0 +1,52 @@
+# Production overrides for a single public server (see docs/deployment.md).
+#
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+#
+# Differences from local development:
+#   * Only Caddy is reachable from the internet (80/443, automatic HTTPS). Postgres, Redis and
+#     the API are no longer published on the host.
+#   * The dev-token endpoint is off: nobody can mint tokens without JWT_SECRET.
+#   * Every service restarts automatically and has a memory ceiling.
+
+services:
+  postgres:
+    ports: !reset []
+    restart: unless-stopped
+    mem_limit: 2g
+
+  redis:
+    ports: !reset []
+    restart: unless-stopped
+    mem_limit: 512m
+
+  api:
+    ports: !reset []
+    restart: unless-stopped
+    mem_limit: 1536m
+    environment:
+      DEV_TOKEN_ENABLED: "false"
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env (at least 32 random characters)}
+      LOG_FORMAT: logstash
+
+  worker:
+    restart: unless-stopped
+    mem_limit: 1g
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      api: { condition: service_healthy }
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env (e.g. insightrag.duckdns.org)}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
