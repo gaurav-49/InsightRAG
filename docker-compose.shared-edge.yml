@@ -1,0 +1,42 @@
+# Alternative production overlay for a server that hosts other apps too,
+# behind one shared Caddy — see gaurav-49/Gym-OS's deploy/edge/. Use this
+# INSTEAD of docker-compose.prod.yml, never alongside it: the two disagree
+# about who runs Caddy, and both want host ports 80/443.
+#
+#   docker compose -p insightrag -f docker-compose.yml -f docker-compose.shared-edge.yml up -d --build
+#
+# Same hardening as docker-compose.prod.yml (no host ports on postgres/redis/api,
+# restarts, memory ceilings, the dev-token endpoint off) but api joins the
+# shared_edge network under a stable name instead of running its own Caddy.
+
+networks:
+  shared_edge:
+    external: true
+
+services:
+  postgres:
+    ports: !reset []
+    restart: unless-stopped
+    mem_limit: 2g
+
+  redis:
+    ports: !reset []
+    restart: unless-stopped
+    mem_limit: 512m
+
+  api:
+    ports: !reset []
+    container_name: insightrag-api
+    restart: unless-stopped
+    mem_limit: 1536m
+    environment:
+      DEV_TOKEN_ENABLED: "false"
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env (at least 32 random characters)}
+      LOG_FORMAT: logstash
+    networks:
+      - default
+      - shared_edge
+
+  worker:
+    restart: unless-stopped
+    mem_limit: 1g

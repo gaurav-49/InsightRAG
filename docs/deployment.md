@@ -212,6 +212,22 @@ nightly database dump:
 
 Copy backups off the server now and then (for example with `scp` to your Mac).
 
+### Hosting another app on the same server
+
+InsightRAG's Caddy above binds ports 80 and 443 by itself. A second app on
+the same box with its own Caddy (GYM OS, say) will fail to bind those same
+ports — only one Caddy can hold them.
+
+The fix, and the one-command migration to it, live in the other app's repo:
+[gaurav-49/Gym-OS `docs/deployment.md`, "Hosting alongside another
+app"](https://github.com/gaurav-49/Gym-OS/blob/main/docs/deployment.md#hosting-alongside-another-app-on-the-same-server).
+It replaces both apps' own Caddy with one shared Caddy that routes to each by
+hostname; `docker-compose.shared-edge.yml` in this repo is the InsightRAG
+half of that — it drops InsightRAG's own Caddy service and joins the shared
+network instead, keeping everything else (the memory ceilings, the disabled
+dev-token endpoint, `JWT_SECRET` required) exactly as `docker-compose.prod.yml`
+has it.
+
 ## Troubleshooting
 
 | Problem | Fix |
